@@ -2160,9 +2160,9 @@ CEngine::FCheckEnfdProps
 	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
 	{
 		CAutoTrace at(m_pmp);
-		at.Os() << "CEngine::FCheckEnfdProps (Group ID: " << pgexpr->Pgroup()->UlId() <<
+		at.Os() << "Before CEngine::FCheckEnfdProps (Group ID: " << pgexpr->Pgroup()->UlId() <<
 				" Expression ID: " <<  pgexpr->UlId() << ")"<< std::endl;
-		m_pmemo->OsPrint(at.Os());
+		pgexpr->Pgroup()->OsPrint(at.Os());
 	}
 
 	// check if all children could be successfully optimized
@@ -2247,9 +2247,25 @@ CEngine::FCheckEnfdProps
 	{
 		AddEnforcers(exprhdl.Pgexpr(), pdrgpexprEnforcers);
 	}
+
+	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
+	{
+		CAutoTrace at(m_pmp);
+		at.Os() << "After CEngine::FCheckEnfdProps (Group ID: " << pgexpr->Pgroup()->UlId() <<
+				" Expression ID: " << pgexpr->UlId() << ")" << std::endl;
+		if (0 < pdrgpexprEnforcers->UlLength())
+		{
+			pgexpr->Pgroup()->OsPrint(at.Os());
+		}
+		else
+		{
+			at.Os() << "No change\n";
+		}
+	}
+
 	pdrgpexprEnforcers->Release();
 	pexpr->Release();
-	
+
 	return FOptimize(epetOrder, epetDistribution, epetRewindability, epetPartitionPropagation);
 }
 
@@ -2397,13 +2413,13 @@ CEngine::FCheckReqdProps
 {
 	GPOS_CHECK_ABORT;
 
-	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
-	{
-		CAutoTrace at(m_pmp);
-		at.Os() << "CEngine::FCheckReqdProps (Group ID: " << exprhdl.Pgexpr()->Pgroup()->UlId() <<
-				" Expression ID: " <<  exprhdl.Pgexpr()->UlId() << ")" << std::endl;
-		m_pmemo->OsPrint(at.Os());
-	}
+//	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
+//	{
+//		CAutoTrace at(m_pmp);
+//		at.Os() << "CEngine::FCheckReqdProps (Group ID: " << exprhdl.Pgexpr()->Pgroup()->UlId() <<
+//				" Expression ID: " <<  exprhdl.Pgexpr()->UlId() << ")" << std::endl;
+//		m_pmemo->OsPrint(at.Os());
+//	}
 
 	// check if operator provides required columns
 	if (!prpp->FProvidesReqdCols(m_pmp, exprhdl, ulOptReq))

@@ -762,10 +762,10 @@ CPhysicalHashJoin::PpprCreate
 {
 	GPOS_ASSERT(exprhdl.Pop() == this);
 	GPOS_ASSERT(NULL != pppsRequired);
-	if (NULL == exprhdl.Pgexpr())
-	{
-		return NULL;
-	}
+//	if (NULL == exprhdl.Pgexpr())
+//	{
+//		return NULL;
+//	}
 
 	ULONG ulOuterChild = (*exprhdl.Pgexpr())[0]->UlId();
 	ULONG ulInnerChild = (*exprhdl.Pgexpr())[1]->UlId();
@@ -878,10 +878,10 @@ CPhysicalHashJoin::PppsRequiredHashJoinChild
 	GPOS_ASSERT(NULL != pppsRequired);
 
 	CPartPropReq *pppr = PpprCreate(pmp, exprhdl, pppsRequired, ulChildIndex);
-	if (NULL == pppr)
-	{
-		return PppsRequiredCompute(pmp, exprhdl, pppsRequired, ulChildIndex);
-	}
+//	if (NULL == pppr)
+//	{
+//		return PppsRequiredCompute(pmp, exprhdl, pppsRequired, ulChildIndex);
+//	}
 
 	CAutoMutex am(m_mutex);
 	am.Lock();

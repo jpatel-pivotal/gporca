@@ -141,7 +141,8 @@ namespace gpopt
 				)
 				const
 			{
-				return PpimPassThruOuter(exprhdl);
+				CPartIndexMap *ppim = PpimPassThruOuter(exprhdl);
+				return ppim;
 			}
 			
 			// derive partition filter map

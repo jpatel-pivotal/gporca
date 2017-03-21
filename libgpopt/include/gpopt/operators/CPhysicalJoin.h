@@ -254,7 +254,8 @@ namespace gpopt
 				)
 				const
 			{
-				return PpimDeriveCombineRelational(pmp, exprhdl);
+				CPartIndexMap *ppim = PpimDeriveCombineRelational(pmp, exprhdl);
+				return ppim;
 			}
 			
 			// derive partition filter map

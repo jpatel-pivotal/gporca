@@ -168,6 +168,8 @@ CPhysicalMotion::PppsRequired
 	
 	CPartIndexMap *ppimResult = GPOS_NEW(pmp) CPartIndexMap(pmp);
 	CPartFilterMap *ppfmResult = GPOS_NEW(pmp) CPartFilterMap(pmp);
+	CPartIndexMap *ppim = ppimResult;
+	GPOS_ASSERT(ppim);
 	
 	/// get derived part consumers
 	CPartInfo *ppartinfo = exprhdl.Pdprel(0)->Ppartinfo();

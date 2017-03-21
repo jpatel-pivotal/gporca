@@ -278,7 +278,10 @@ CPhysicalInnerHashJoin::PppsRequired
 	ULONG // ulOptReq
 	)
 {
-	return PppsRequiredHashJoinChild(pmp, exprhdl, pppsRequired, ulChildIndex, pdrgpdpCtxt);
+	CPartitionPropagationSpec *ppps = PppsRequiredHashJoinChild(pmp, exprhdl, pppsRequired, ulChildIndex, pdrgpdpCtxt);
+	CPartIndexMap *ppim = ppps->Ppim();
+	GPOS_ASSERT(ppim);
+	return ppps;
 }
 
 // EOF
