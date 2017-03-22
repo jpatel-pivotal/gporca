@@ -193,6 +193,8 @@ CPhysicalMotion::PppsRequired
 		
 	pdrgpul->Release();
 
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalMotion::PppsRequired" << ' ' << exprhdl.Pgexpr()->Pgroup()->UlId() << ',' << exprhdl.Pgexpr()->UlId() << ' ' << *ppim;
 	return GPOS_NEW(pmp) CPartitionPropagationSpec(ppimResult, ppfmResult);
 }
 
@@ -320,6 +322,14 @@ CPhysicalMotion::EpetRewindability
 
 	// motion does not provide rewindability on its output
 	return CEnfdProp::EpetRequired;
+}
+
+CPartIndexMap *CPhysicalMotion::PpimDerive(IMemoryPool *pmp, CExpressionHandle &exprhdl, CDrvdPropCtxt *) const
+{
+	CPartIndexMap *ppim = PpimPassThruOuter(exprhdl);
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalMotion::PpimDerive " << exprhdl.Pgexpr() << ' ' << *ppim;
+	return ppim;
 }
 
 // EOF

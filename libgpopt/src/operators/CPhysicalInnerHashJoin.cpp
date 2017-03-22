@@ -280,7 +280,8 @@ CPhysicalInnerHashJoin::PppsRequired
 {
 	CPartitionPropagationSpec *ppps = PppsRequiredHashJoinChild(pmp, exprhdl, pppsRequired, ulChildIndex, pdrgpdpCtxt);
 	CPartIndexMap *ppim = ppps->Ppim();
-	GPOS_ASSERT(ppim);
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalInnerHashJoin::PppsRequired" << ' ' << exprhdl.Pgexpr() << " child dude " << ulChildIndex << ' ' << *ppim;
 	return ppps;
 }
 

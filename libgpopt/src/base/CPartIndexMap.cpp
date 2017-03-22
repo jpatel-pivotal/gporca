@@ -1011,8 +1011,9 @@ CPartIndexMap::OsPrint
 		
 		CPartIndexMap::OsPrintPartCnstrMap(ppti->UlScanId(), ppti->Ppartcnstrmap(), os);
 
-		os << ">), unresolved: (" << m_ulUnresolved << ", " << m_ulUnresolvedZeroPropagators << "), ";
+		os << ">), ";
 	}
+	os << "unresolved: (" << m_ulUnresolved << ", " << m_ulUnresolvedZeroPropagators << ")";
 
 	return os;
 }

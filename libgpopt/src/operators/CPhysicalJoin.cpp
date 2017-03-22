@@ -1054,5 +1054,14 @@ CPhysicalJoin::Edm
 	return CEnfdDistribution::EdmExact;
 }
 
+CPartIndexMap *CPhysicalJoin::PpimDerive(IMemoryPool *pmp, CExpressionHandle &exprhdl, CDrvdPropCtxt *) const
+{
+	CPartIndexMap *ppim = PpimDeriveCombineRelational(pmp, exprhdl);
+
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalJoin::PpimDerive" << ' ' << exprhdl.Pgexpr() << ' ' << *ppim;
+	return ppim;
+}
+
 
 // EOF

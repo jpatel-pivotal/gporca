@@ -135,15 +135,11 @@ namespace gpopt
 			virtual
 			CPartIndexMap *PpimDerive
 				(
-				IMemoryPool *, // pmp
+				IMemoryPool *pmp,
 				CExpressionHandle &exprhdl,
 				CDrvdPropCtxt * //pdpctxt
 				)
-				const
-			{
-				CPartIndexMap *ppim = PpimPassThruOuter(exprhdl);
-				return ppim;
-			}
+				const;
 			
 			// derive partition filter map
 			virtual

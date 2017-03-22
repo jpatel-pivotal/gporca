@@ -1207,3 +1207,17 @@ CGroupExpression::DbgPrint()
 #endif // GPOS_DEBUG
 
 // EOF
+IOstream &::gpopt::operator<<(IOstream &os, CGroupExpression *pgexpr)
+{
+	os << '(';
+	if (pgexpr)
+	{
+		os << pgexpr->Pgroup()->UlId() << ',' << pgexpr->UlId();
+	}
+	else
+	{
+		os << "not a group expression";
+	}
+	os << ')';
+	return os;
+}

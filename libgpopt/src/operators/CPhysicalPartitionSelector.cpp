@@ -640,6 +640,9 @@ CPhysicalPartitionSelector::PppsRequired
 	// cleanup
 	pdrgpulInputScanIds->Release();
 
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalPartitionSelector::PppsRequired "  << exprhdl.Pgexpr()->Pgroup()->UlId() << ',' << exprhdl.Pgexpr()->UlId() << ' ' << *ppim;
+
 	return GPOS_NEW(pmp) CPartitionPropagationSpec(ppim, ppfm);
 }
 
@@ -770,6 +773,8 @@ CPhysicalPartitionSelector::PpimDerive
 		ppim->Insert(m_ulScanId, m_ppartcnstrmap, CPartIndexMap::EpimPropagator, 0 /*ulExpectedPropagators*/, Pmdid(), pdrgppartkeys, m_ppartcnstr);
 	}
 
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalPartitionSelector::PpimDerive "  << exprhdl.Pgexpr() << ' ' << *ppim;
 	return ppim;
 }
 

@@ -125,6 +125,8 @@ CPhysicalDynamicScan::PpimDerive
 	ULONG ulExpectedPartitionSelectors = CDrvdPropCtxtPlan::PdpctxtplanConvert(pdpctxt)->UlExpectedPartitionSelectors();
 
 	CPartIndexMap *ppim = PpimDeriveFromDynamicScan(pmp, m_ulScanId, pmdid, m_pdrgpdrgpcrPart, m_ulSecondaryScanId, m_ppartcnstr, m_ppartcnstrRel, ulExpectedPartitionSelectors);
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalDynamicScan::PpimDerive" << ' ' << exprhdl.Pgexpr() << ' ' << *ppim;
 	return ppim;
 }
 

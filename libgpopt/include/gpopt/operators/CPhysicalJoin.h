@@ -252,11 +252,7 @@ namespace gpopt
 				CExpressionHandle &exprhdl,
 				CDrvdPropCtxt * //pdpctxt
 				)
-				const
-			{
-				CPartIndexMap *ppim = PpimDeriveCombineRelational(pmp, exprhdl);
-				return ppim;
-			}
+				const;
 			
 			// derive partition filter map
 			virtual

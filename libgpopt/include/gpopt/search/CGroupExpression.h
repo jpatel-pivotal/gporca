@@ -451,7 +451,8 @@ namespace gpopt
 			const CGroupExpression m_gexprInvalid;
 
 	}; // class CGroupExpression
-	
+
+	IOstream & operator << (IOstream &os, CGroupExpression* pgexpr);
 }
 
 
