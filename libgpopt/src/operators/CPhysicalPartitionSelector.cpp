@@ -641,7 +641,7 @@ CPhysicalPartitionSelector::PppsRequired
 	pdrgpulInputScanIds->Release();
 
 	CAutoTrace at(pmp);
-	at.Os() << "CPhysicalPartitionSelector::PppsRequired "  << exprhdl.Pgexpr()->Pgroup()->UlId() << ',' << exprhdl.Pgexpr()->UlId() << ' ' << *ppim;
+	at.Os() << "CPhysicalPartitionSelector::PppsRequired"  << ' ' << exprhdl.Pgexpr() << " child dude " << ulChildIndex << ' ' << "reqd: " << *pppsRequired->Ppim() << " child req: " << *ppim;
 
 	return GPOS_NEW(pmp) CPartitionPropagationSpec(ppim, ppfm);
 }
