@@ -2413,13 +2413,13 @@ CEngine::FCheckReqdProps
 {
 	GPOS_CHECK_ABORT;
 
-//	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
-//	{
-//		CAutoTrace at(m_pmp);
-//		at.Os() << "CEngine::FCheckReqdProps (Group ID: " << exprhdl.Pgexpr()->Pgroup()->UlId() <<
-//				" Expression ID: " <<  exprhdl.Pgexpr()->UlId() << ")" << std::endl;
+	if (GPOS_FTRACE(EopttracePrintMemoEnforcement))
+	{
+		CAutoTrace at(m_pmp);
+		at.Os() << "CEngine::FCheckReqdProps (Group ID: " << exprhdl.Pgexpr()->Pgroup()->UlId() <<
+				" Expression ID: " <<  exprhdl.Pgexpr()->UlId() << ")" << std::endl;
 //		m_pmemo->OsPrint(at.Os());
-//	}
+	}
 
 	// check if operator provides required columns
 	if (!prpp->FProvidesReqdCols(m_pmp, exprhdl, ulOptReq))

@@ -14,6 +14,7 @@
 #include "gpopt/base/CUtils.h"
 #include "gpopt/base/CDistributionSpecAny.h"
 #include "gpopt/base/CDistributionSpecReplicated.h"
+#include "gpopt/base/CDrvdPropCtxtPlan.h"
 
 #include "gpopt/operators/ops.h"
 #include "gpopt/operators/CExpressionHandle.h"
@@ -1054,12 +1055,15 @@ CPhysicalJoin::Edm
 	return CEnfdDistribution::EdmExact;
 }
 
-CPartIndexMap *CPhysicalJoin::PpimDerive(IMemoryPool *pmp, CExpressionHandle &exprhdl, CDrvdPropCtxt *) const
+CPartIndexMap *CPhysicalJoin::PpimDerive(IMemoryPool *pmp, CExpressionHandle &exprhdl, CDrvdPropCtxt *pdpctxt) const
 {
 	CPartIndexMap *ppim = PpimDeriveCombineRelational(pmp, exprhdl);
+	ULONG ulExpectedPartitionSelectors = CDrvdPropCtxtPlan::PdpctxtplanConvert(pdpctxt)->UlExpectedPartitionSelectors();
 
 	CAutoTrace at(pmp);
-	at.Os() << "CPhysicalJoin::PpimDerive" << ' ' << exprhdl.Pgexpr() << ' ' << *ppim;
+	at.Os() << "CPhysicalJoin::PpimDerive "
+			<< "ulExpectedPartitionSelectors=" << ulExpectedPartitionSelectors << ' '
+			<< exprhdl.Pgexpr() << ' ' << *ppim;
 	return ppim;
 }
 

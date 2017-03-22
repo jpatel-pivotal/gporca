@@ -551,8 +551,9 @@ CJobGroupExpressionOptimization::EevtOptimizeSelf
 	DrgPoc *pdrgpoc = pjgeo->m_pdrgpoc;
 	ULONG ulOptReq = pjgeo->m_ulOptReq;
 
+	GPOS_TRACE_FORMAT("<PccComputeCost> (%d,%d)", pgexpr->Pgroup()->UlId(), pgexpr->UlId());
 	CCostContext *pcc = pgexpr->PccComputeCost(psc->PmpGlobal(), poc, ulOptReq, pdrgpoc, false /*fPruned*/, CCost(0.0));
-	
+
 	if (NULL == pcc)
 	{
 		pjgeo->Cleanup();

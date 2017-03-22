@@ -73,7 +73,7 @@ CPhysicalHashJoin::CPhysicalHashJoin
 	// Req(N + 3) (singleton, singleton)
 
 	ULONG ulDistrReqs = GPOPT_NON_HASH_DIST_REQUESTS + m_pdrgpdsRedistributeRequests->UlLength();
-	SetDistrRequests(ulDistrReqs);
+	SetDistrRequests(ulDistrReqs - ulDistrReqs + 1);
 
 	m_phmpp = GPOS_NEW(pmp) HMPartPropagation(pmp);
 }

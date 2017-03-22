@@ -774,7 +774,9 @@ CPhysicalPartitionSelector::PpimDerive
 	}
 
 	CAutoTrace at(pmp);
-	at.Os() << "CPhysicalPartitionSelector::PpimDerive "  << exprhdl.Pgexpr() << ' ' << *ppim;
+	at.Os() << "CPhysicalPartitionSelector::PpimDerive "
+			<< "ulExpectedPartitionSelectors=" << ulExpectedPartitionSelectors << ' '
+			<< exprhdl.Pgexpr() << ' ' << *ppim;
 	return ppim;
 }
 

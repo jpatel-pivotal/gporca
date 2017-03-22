@@ -14,6 +14,7 @@
 #include "gpopt/base/CUtils.h"
 #include "gpopt/base/COptCtxt.h"
 #include "gpopt/base/CDistributionSpecAny.h"
+#include "gpopt/base/CDrvdPropCtxtPlan.h"
 #include "gpopt/operators/CExpressionHandle.h"
 #include "gpopt/operators/CPhysicalMotion.h"
 #include "gpopt/search/CMemo.h"
@@ -324,11 +325,15 @@ CPhysicalMotion::EpetRewindability
 	return CEnfdProp::EpetRequired;
 }
 
-CPartIndexMap *CPhysicalMotion::PpimDerive(IMemoryPool *pmp, CExpressionHandle &exprhdl, CDrvdPropCtxt *) const
+CPartIndexMap *CPhysicalMotion::PpimDerive(IMemoryPool *pmp, CExpressionHandle &exprhdl, CDrvdPropCtxt *pdpctxt) const
 {
 	CPartIndexMap *ppim = PpimPassThruOuter(exprhdl);
+	ULONG ulExpectedPartitionSelectors = CDrvdPropCtxtPlan::PdpctxtplanConvert(pdpctxt)->UlExpectedPartitionSelectors();
+
 	CAutoTrace at(pmp);
-	at.Os() << "CPhysicalMotion::PpimDerive " << exprhdl.Pgexpr() << ' ' << *ppim;
+	at.Os() << "CPhysicalMotion::PpimDerive "
+			<< "ulExpectedPartitionSelectors=" << ulExpectedPartitionSelectors << ' '
+			<< exprhdl.Pgexpr() << ' ' << *ppim;
 	return ppim;
 }
 
