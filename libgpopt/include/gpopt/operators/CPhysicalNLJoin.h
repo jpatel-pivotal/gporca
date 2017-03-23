@@ -110,12 +110,7 @@ namespace gpopt
 				ULONG ulChildIndex,
 				DrgPdp *pdrgpdpCtxt,
 				ULONG ulOptReq
-				)
-			{
-				GPOS_ASSERT(ulOptReq < UlPartPropagateRequests());
-
-				return PppsRequiredNLJoinChild(pmp, exprhdl, pppsRequired, ulChildIndex, pdrgpdpCtxt, ulOptReq);
-			}
+				);
 
 			//-------------------------------------------------------------------------------------
 			// Enforced Properties

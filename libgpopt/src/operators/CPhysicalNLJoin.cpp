@@ -299,6 +299,22 @@ CPhysicalNLJoin::PppsRequiredNLJoinChild
 	return GPOS_NEW(pmp) CPartitionPropagationSpec(ppimResult, ppfmResult);
 }
 
+CPartitionPropagationSpec *
+CPhysicalNLJoin::PppsRequired(IMemoryPool *pmp, CExpressionHandle &exprhdl, CPartitionPropagationSpec *pppsRequired,
+							  ULONG ulChildIndex, DrgPdp *pdrgpdpCtxt, ULONG ulOptReq)
+{
+	GPOS_ASSERT(ulOptReq < UlPartPropagateRequests());
+
+	CPartitionPropagationSpec *ppps = PppsRequiredNLJoinChild(pmp, exprhdl, pppsRequired, ulChildIndex, pdrgpdpCtxt, ulOptReq);
+	CPartIndexMap *ppim = ppps->Ppim();
+	CAutoTrace at(pmp);
+	at.Os() << "CPhysicalNLJoin::PppsRequired" << ' '
+			<< exprhdl.Pgexpr() << " child dude " << ulChildIndex << ' '
+			<< "reqd: " << *pppsRequired->Ppim()
+			<< " child req: " << *ppim;
+	return ppps;
+}
+
 
 // EOF
 
