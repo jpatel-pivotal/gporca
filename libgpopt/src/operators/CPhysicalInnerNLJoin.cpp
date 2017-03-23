@@ -42,7 +42,7 @@ CPhysicalInnerNLJoin::CPhysicalInnerNLJoin
 	// (0) Outer child is requested for ANY distribution, and inner child is requested for a Replicated (or a matching) distribution
 	// (1) Outer child is requested for Replicated distribution, and inner child is requested for Non-Singleton
 
-	SetDistrRequests(2);
+	SetDistrRequests(1);
 }
 
 
