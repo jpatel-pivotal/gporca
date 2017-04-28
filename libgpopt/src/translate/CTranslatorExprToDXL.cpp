@@ -3192,6 +3192,7 @@ CTranslatorExprToDXL::PdxlnCorrelatedNLJoin
 
 	COperator::EOperatorId eopid = pexpr->Pop()->Eopid();
 	CDXLNode *pdxlnCond = NULL;
+	BOOL FSomeFlag = false;
 	if (CUtils::FScalarConstTrue(pexprScalar) &&
 		COperator::EopPhysicalCorrelatedInnerNLJoin == eopid)
 	{
@@ -3214,6 +3215,8 @@ CTranslatorExprToDXL::PdxlnCorrelatedNLJoin
 	else
 	{
 		BuildSubplans(pexpr, pdrgdxlcr, pdrgmdid, &pdxlnCond, pdrgpdsBaseTables, pulNonGatherMotions, pfDML);
+		FSomeFlag = true;
+		
 	}
 
 	// extract dxl properties from correlated join
@@ -3231,18 +3234,30 @@ CTranslatorExprToDXL::PdxlnCorrelatedNLJoin
 
 		case COperator::EopPhysicalFilter:
 		{
-			// get the original condition from the filter node
-			CExpression *pexprOrigCond = (*pexprOuterChild)[1];
-			CDXLNode *pdxlnOrigCond = PdxlnScalar(pexprOrigCond);
-			// create a new AND expression
-			CDXLNode *pdxlnBoolExpr = PdxlnScBoolExpr
-											(
-											Edxland,
-											pdxlnOrigCond,
-											pdxlnCond
-											);
-
-			pdxln = PdxlnResultFromNLJoinOuter(pexprOuterChild, pdxlnBoolExpr, pdrgpcr, pdrgpdsBaseTables, pulNonGatherMotions, pfDML, pdxlprop);
+			if (FSomeFlag)
+			{
+				// create a result node over outer child
+				pdxlprop->AddRef();
+				pdxln = PdxlnResult(pexprOuterChild, pdrgpcr, pdrgpdsBaseTables, pulNonGatherMotions, pfDML, pdxlnCond, pdxlprop);
+			}
+			else
+			{
+				// get the original condition from the filter node
+				CExpression *pexprOrigCond = (*pexprOuterChild)[1];
+				CDXLNode *pdxlnOrigCond = PdxlnScalar(pexprOrigCond);
+				// create a new AND expression
+				CDXLNode *pdxlnBoolExpr = PdxlnScBoolExpr
+				(
+				 Edxland,
+				 pdxlnOrigCond,
+				 pdxlnCond
+				 );
+				
+				pdxln = PdxlnResultFromNLJoinOuter(pexprOuterChild, pdxlnBoolExpr, pdrgpcr, pdrgpdsBaseTables, pulNonGatherMotions, pfDML, pdxlprop);
+			}
+			
+//			pdxlnCond->AddRef();
+//			pdxln->AddChild(pdxlnCond);
 			break;
 		}
 
@@ -3498,7 +3513,9 @@ CTranslatorExprToDXL::PdxlnResultFromNLJoinOuter
 		}
 			break;
 		case EdxlopPhysicalSequence:
+		{
 			pdxlnCond->Release();
+		}
 			break;
 		default:
 			pdxlnCond->Release();
