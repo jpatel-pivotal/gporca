@@ -87,6 +87,7 @@
 #include "gpopt/xforms/CXformLeftSemiJoin2InnerJoin.h"
 #include "gpopt/xforms/CXformLeftSemiJoin2InnerJoinUnderGb.h"
 #include "gpopt/xforms/CXformLeftSemiJoin2CrossProduct.h"
+#include "gpopt/xforms/CXformLeftSemiJoin2LeftSemiJoinWithLimit.h"
 
 #include "gpopt/xforms/CXformCTEAnchor2Sequence.h"
 #include "gpopt/xforms/CXformCTEAnchor2TrivialSelect.h"

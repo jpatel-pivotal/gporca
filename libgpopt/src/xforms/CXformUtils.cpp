@@ -100,6 +100,33 @@ CXformUtils::ExfpSemiJoin2CrossProduct
 }
 
 
+//		Check the applicability of semi join to cross product xform
+//
+//---------------------------------------------------------------------------
+CXform::EXformPromise
+CXformUtils::ExfpLeftSemiJoin2LeftSemiJoinWithLimit
+(
+	CExpressionHandle &exprhdl
+	)
+{
+#ifdef GPOS_DEBUG
+    COperator::EOperatorId eopid =  exprhdl.Pop()->Eopid();
+#endif // GPOS_DEBUG
+    GPOS_ASSERT(COperator::EopLogicalLeftSemiJoin == eopid ||
+                COperator::EopLogicalLeftAntiSemiJoin == eopid ||
+                COperator::EopLogicalLeftAntiSemiJoinNotIn == eopid);
+
+    CColRefSet *pcrsUsed = exprhdl.Pdpscalar(2 /*ulChildIndex*/)->PcrsUsed();
+    CColRefSet *pcrsOuterOutput = exprhdl.Pdprel(0 /*ulChildIndex*/)->PcrsOutput();
+    if (0 != pcrsUsed->CElements() || pcrsOuterOutput->FSubset(pcrsUsed))
+    {
+        // xform is inapplicable of join predicate uses columns from join's inner child
+        return CXform::ExfpNone;
+    }
+
+    return CXform::ExfpHigh;
+}
+
 //---------------------------------------------------------------------------
 //	@function:
 //		CXformUtils::ExfpExpandJoinOrder
@@ -2137,6 +2164,7 @@ CXformUtils::FApplyToNextBinding
 		CXform::ExfExpandFullOuterJoin,
 		CXform::ExfUnnestTVF,
 		CXform::ExfLeftSemiJoin2CrossProduct,
+        CXform::ExfLeftSemiJoin2LeftSemiJoinWithLimit,
 		CXform::ExfLeftAntiSemiJoin2CrossProduct,
 		CXform::ExfLeftAntiSemiJoinNotIn2CrossProduct,
 	};

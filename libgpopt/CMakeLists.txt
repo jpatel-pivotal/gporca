@@ -823,6 +823,8 @@ add_library(gpopt
             src/xforms/CXformLeftSemiApplyWithExternalCorrs2InnerJoin.cpp
             include/gpopt/xforms/CXformLeftSemiJoin2CrossProduct.h
             src/xforms/CXformLeftSemiJoin2CrossProduct.cpp
+            include/gpopt/xforms/CXformLeftSemiJoin2LeftSemiJoinWithLimit.h
+            src/xforms/CXformLeftSemiJoin2LeftSemiJoinWithLimit.cpp
             include/gpopt/xforms/CXformLeftSemiJoin2HashJoin.h
             src/xforms/CXformLeftSemiJoin2HashJoin.cpp
             include/gpopt/xforms/CXformLeftSemiJoin2InnerJoin.h

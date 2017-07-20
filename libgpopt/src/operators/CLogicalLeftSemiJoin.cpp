@@ -64,6 +64,7 @@ CLogicalLeftSemiJoin::PxfsCandidates
 	(void) pxfs->FExchangeSet(CXform::ExfLeftSemiJoin2InnerJoin);
 	(void) pxfs->FExchangeSet(CXform::ExfLeftSemiJoin2InnerJoinUnderGb);
 	(void) pxfs->FExchangeSet(CXform::ExfLeftSemiJoin2CrossProduct);
+    (void) pxfs->FExchangeSet(CXform::ExfLeftSemiJoin2LeftSemiJoinWithLimit);
 	(void) pxfs->FExchangeSet(CXform::ExfLeftSemiJoin2NLJoin);
 	(void) pxfs->FExchangeSet(CXform::ExfLeftSemiJoin2HashJoin);
 

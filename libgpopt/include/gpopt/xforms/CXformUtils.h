@@ -583,6 +583,10 @@ namespace gpopt
 			static
 			CXform::EXformPromise ExfpSemiJoin2CrossProduct(CExpressionHandle &exprhdl);
 
+            //check the applicability of left semi join to left semi join with limit
+            static
+            CXform::EXformPromise ExfpLeftSemiJoin2LeftSemiJoinWithLimit(CExpressionHandle &exprhdl);
+
 			// check the applicability of N-ary join expansion
 			static
 			CXform::EXformPromise ExfpExpandJoinOrder(CExpressionHandle &exprhdl);
