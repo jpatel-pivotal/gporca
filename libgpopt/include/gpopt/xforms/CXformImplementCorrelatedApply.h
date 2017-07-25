@@ -92,12 +92,6 @@ namespace gpopt
                 pexprRight->AddRef();
                 pexprScalar->AddRef();
 
-                if (pexpr->Pop()->Eopid() == COperator::EopLogicalLeftSemiCorrelatedApplyIn && CUtils::FScalarConst(pexprScalar))
-                {
-                    // create a (limit 1) on top of inner child
-                    pexprRight = CUtils::PexprLimit(pmp, pexprRight, 0 /* offset */, 1 /* count */);
-                }
-
                 // assemble physical operator
                 CExpression *pexprPhysicalApply =
                 GPOS_NEW(pmp) CExpression

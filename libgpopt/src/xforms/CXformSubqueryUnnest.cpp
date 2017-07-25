@@ -197,10 +197,50 @@ CXformSubqueryUnnest::Transform
 
 	// second, generate the alternative where a correlated Apply always enforced
 	CExpression *pexprCorrelatedApply = PexprSubqueryUnnest(pmp, pexpr, true /*fEnforceCorrelatedApply*/);
+
+	
 	if (NULL != pexprCorrelatedApply)
 	{
+		
+		CDrvdPropRelational *pdpExpr = CDrvdPropRelational::Pdprel(pexprCorrelatedApply->PdpDerive());
+		CColRefSet *pcrsUsed = pdpExpr->PcrsOutput();
+		
+		CExpression *pexprRight = (*pexprCorrelatedApply)[1];
+		CExpression *pexprNew = NULL;
+		if (pexprCorrelatedApply->UlArity() == 3)
+		{
+			CExpression *pexprScalar = (*pexprCorrelatedApply)[2];
+			
+			CDrvdPropRelational *pdpInner = CDrvdPropRelational::Pdprel(pexprRight->PdpDerive());
+			CColRefSet *pcrsInner = pdpInner->PcrsOutput();
+			
+			if (COperator::EopLogicalLeftSemiCorrelatedApplyIn == pexprCorrelatedApply->Pop()->Eopid() && CUtils::FScalarConstTrue(pexprScalar))
+			{
+				if ( !pcrsInner->FSubset(pcrsUsed)  && !pexprRight->FHasOuterRefs())
+				{
+					// create a (limit 1) on top of inner child
+					pexprRight->AddRef();
+					pexprRight = CUtils::PexprLimit(pmp, pexprRight, 0 /* offset */, 1 /* count */);
+					pexprScalar->AddRef();
+					CExpression *pexprFirstChild = (*pexprCorrelatedApply)[0];
+					pexprFirstChild->AddRef();
+					COperator *popnew = pexprCorrelatedApply->Pop();
+					popnew->AddRef();
+					pexprNew = GPOS_NEW(pmp) CExpression(pmp, popnew, pexprFirstChild, pexprRight, pexprScalar);
+				}
+				
+			}
+		}
+		
+		
 		// add alternative to results
-		pxfres->Add(pexprCorrelatedApply);
+		if (pexprNew)
+		{
+			pexprCorrelatedApply->Release();
+			return pxfres->Add(pexprNew);
+		}
+		else
+			pxfres->Add(pexprCorrelatedApply);
 	}
 }
 
