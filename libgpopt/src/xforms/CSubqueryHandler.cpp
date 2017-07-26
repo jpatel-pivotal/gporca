@@ -980,10 +980,24 @@ CSubqueryHandler::FCreateCorrelatedApplyForQuantifiedSubquery
 	pexprInner->AddRef();
 	if (EsqctxtFilter == esqctxt && !fDisjunction)
 	{
+        CDrvdPropRelational *pdpInner = CDrvdPropRelational::Pdprel(pexprInner->PdpDerive());
+        // for existential subqueries, any column produced by inner expression
+        // can be used to check for empty answers; we use first column for that
+        CColRef *pcr = pdpInner->PcrsOutput()->PcrFirst();
+
 		// we can use correlated semi-IN/anti-semi-NOT-IN apply here since the subquery is used in filtering context
 		if (COperator::EopScalarSubqueryAny == eopidSubq)
 		{
-			*ppexprNewOuter = CUtils::PexprLogicalApply<CLogicalLeftSemiCorrelatedApplyIn>(pmp, pexprOuter, pexprInner, pcr, eopidSubq, pexprPredicate);
+            CColRefSet *pcrsOuterRefs = pdpInner->PcrsOuter();
+
+            if (0 == pcrsOuterRefs->CElements())
+            {
+                // add a limit operator on top of the inner child if the subquery does not have
+                // any outer references. Adding Limit for the correlated case hinders pulling up
+                // predicates into an EXISTS join
+                pexprInner = CUtils::PexprLimit(pmp, pexprInner, 0, 1);
+            }
+            *ppexprNewOuter = CUtils::PexprLogicalApply<CLogicalLeftSemiCorrelatedApplyIn>(pmp, pexprOuter, pexprInner, pcr, eopidSubq, pexprPredicate);
 		}
 		else
 		{
